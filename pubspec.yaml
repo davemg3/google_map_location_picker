@@ -20,9 +20,9 @@ dependencies:
   geolocator: ^9.0.2
   android_intent_plus: ^4.0.3
   provider: ^6.0.0
-  http: ^1.0.0
+  http: ^1.2.1
   stack_trace: ^1.10.0
-  package_info_plus: ^5.0.1
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
