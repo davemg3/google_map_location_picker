@@ -29,7 +29,7 @@ class LocationPicker extends StatefulWidget {
     this.layersButtonEnabled,
     this.automaticallyAnimateToCurrentLocation,
     this.mapStylePath,
-    this.appBar,
+    this.appBarTitle,
     this.appBarColor,
     this.searchBarBoxDecoration,
     this.hintText,
@@ -55,7 +55,7 @@ class LocationPicker extends StatefulWidget {
 
   final String? mapStylePath;
 
-  final PreferredSizeWidget? appBar;
+  final String? appBarTitle;
   final Color? appBarColor;
   final BoxDecoration? searchBarBoxDecoration;
   final String? hintText;
@@ -376,66 +376,43 @@ class LocationPickerState extends State<LocationPicker> {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
       ],
       child: Builder(builder: (context) {
-        return widget.appBar != null
-            ? Scaffold(
-                extendBodyBehindAppBar: true,
-                appBar: widget.appBar!,
-                body: MapPicker(
-                  widget.apiKey,
-                  initialCenter: widget.initialCenter,
-                  initialZoom: widget.initialZoom,
-                  requiredGPS: widget.requiredGPS,
-                  myLocationButtonEnabled: widget.myLocationButtonEnabled,
-                  layersButtonEnabled: widget.layersButtonEnabled,
-                  automaticallyAnimateToCurrentLocation: widget.automaticallyAnimateToCurrentLocation,
-                  mapStylePath: widget.mapStylePath,
-                  appBarColor: widget.appBarColor,
-                  searchBarBoxDecoration: widget.searchBarBoxDecoration,
-                  hintText: widget.hintText,
-                  resultCardConfirmIcon: widget.resultCardConfirmIcon,
-                  resultCardAlignment: widget.resultCardAlignment,
-                  resultCardDecoration: widget.resultCardDecoration,
-                  resultCardPadding: widget.resultCardPadding,
-                  key: mapKey,
-                  language: widget.language,
-                  desiredAccuracy: widget.desiredAccuracy,
-                ),
-              )
-            : Scaffold(
-                extendBodyBehindAppBar: true,
-                appBar: AppBar(
-                  iconTheme: Theme.of(context).iconTheme,
-                  elevation: 0,
-                  backgroundColor: widget.appBarColor,
-                  key: appBarKey,
-                  title: SearchInput(
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            iconTheme: Theme.of(context).iconTheme,
+            elevation: 0,
+            backgroundColor: widget.appBarColor,
+            key: appBarKey,
+            title: widget.appBarTitle != null
+                ? Text(widget.appBarTitle!)
+                : SearchInput(
                     (input) => searchPlace(input),
                     key: searchInputKey,
                     boxDecoration: widget.searchBarBoxDecoration,
                     hintText: widget.hintText,
                   ),
-                ),
-                body: MapPicker(
-                  widget.apiKey,
-                  initialCenter: widget.initialCenter,
-                  initialZoom: widget.initialZoom,
-                  requiredGPS: widget.requiredGPS,
-                  myLocationButtonEnabled: widget.myLocationButtonEnabled,
-                  layersButtonEnabled: widget.layersButtonEnabled,
-                  automaticallyAnimateToCurrentLocation: widget.automaticallyAnimateToCurrentLocation,
-                  mapStylePath: widget.mapStylePath,
-                  appBarColor: widget.appBarColor,
-                  searchBarBoxDecoration: widget.searchBarBoxDecoration,
-                  hintText: widget.hintText,
-                  resultCardConfirmIcon: widget.resultCardConfirmIcon,
-                  resultCardAlignment: widget.resultCardAlignment,
-                  resultCardDecoration: widget.resultCardDecoration,
-                  resultCardPadding: widget.resultCardPadding,
-                  key: mapKey,
-                  language: widget.language,
-                  desiredAccuracy: widget.desiredAccuracy,
-                ),
-              );
+          ),
+          body: MapPicker(
+            widget.apiKey,
+            initialCenter: widget.initialCenter,
+            initialZoom: widget.initialZoom,
+            requiredGPS: widget.requiredGPS,
+            myLocationButtonEnabled: widget.myLocationButtonEnabled,
+            layersButtonEnabled: widget.layersButtonEnabled,
+            automaticallyAnimateToCurrentLocation: widget.automaticallyAnimateToCurrentLocation,
+            mapStylePath: widget.mapStylePath,
+            appBarColor: widget.appBarColor,
+            searchBarBoxDecoration: widget.searchBarBoxDecoration,
+            hintText: widget.hintText,
+            resultCardConfirmIcon: widget.resultCardConfirmIcon,
+            resultCardAlignment: widget.resultCardAlignment,
+            resultCardDecoration: widget.resultCardDecoration,
+            resultCardPadding: widget.resultCardPadding,
+            key: mapKey,
+            language: widget.language,
+            desiredAccuracy: widget.desiredAccuracy,
+          ),
+        );
       }),
     );
   }
