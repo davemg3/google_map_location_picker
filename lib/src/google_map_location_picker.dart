@@ -29,6 +29,7 @@ class LocationPicker extends StatefulWidget {
     this.layersButtonEnabled,
     this.automaticallyAnimateToCurrentLocation,
     this.mapStylePath,
+    this.appBar,
     this.appBarColor,
     this.searchBarBoxDecoration,
     this.hintText,
@@ -54,6 +55,7 @@ class LocationPicker extends StatefulWidget {
 
   final String? mapStylePath;
 
+  final PreferredSizeWidget? appBar;
   final Color? appBarColor;
   final BoxDecoration? searchBarBoxDecoration;
   final String? hintText;
@@ -374,9 +376,10 @@ class LocationPickerState extends State<LocationPicker> {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
       ],
       child: Builder(builder: (context) {
-        return widget.hintText == null
+        return widget.appBar != null
             ? Scaffold(
                 extendBodyBehindAppBar: true,
+                appBar: widget.appBar!,
                 body: MapPicker(
                   widget.apiKey,
                   initialCenter: widget.initialCenter,
