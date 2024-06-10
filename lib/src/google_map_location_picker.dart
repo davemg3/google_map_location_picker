@@ -29,7 +29,8 @@ class LocationPicker extends StatefulWidget {
     this.layersButtonEnabled,
     this.automaticallyAnimateToCurrentLocation,
     this.mapStylePath,
-    this.appBarTitle,
+    this.appBarTitle, //added by MG 10/06/2024
+    this.appBarTitleColor, //added by MG 10/06/2024
     this.appBarColor,
     this.searchBarBoxDecoration,
     this.hintText,
@@ -55,7 +56,8 @@ class LocationPicker extends StatefulWidget {
 
   final String? mapStylePath;
 
-  final String? appBarTitle;
+  final String? appBarTitle; //added by MG 10/06/2024
+  final Color? appBarTitleColor; //added by MG 10/06/2024
   final Color? appBarColor;
   final BoxDecoration? searchBarBoxDecoration;
   final String? hintText;
@@ -384,7 +386,10 @@ class LocationPickerState extends State<LocationPicker> {
             backgroundColor: widget.appBarColor,
             key: appBarKey,
             title: widget.appBarTitle != null
-                ? Text(widget.appBarTitle!)
+                ? Text(
+                    widget.appBarTitle!,
+                    style: TextStyle(color: widget.appBarTitleColor ?? Colors.black),
+                  )
                 : SearchInput(
                     (input) => searchPlace(input),
                     key: searchInputKey,
