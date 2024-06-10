@@ -388,7 +388,7 @@ class LocationPickerState extends State<LocationPicker> {
             title: widget.appBarTitle != null
                 ? Text(
                     widget.appBarTitle!,
-                    style: TextStyle(color: widget.appBarTitleColor ?? Colors.black, fontSize: 12),
+                    style: TextStyle(color: widget.appBarTitleColor ?? Colors.black, fontSize: 16),
                   )
                 : SearchInput(
                     (input) => searchPlace(input),
