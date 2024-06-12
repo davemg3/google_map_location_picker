@@ -87,8 +87,7 @@ class MapPickerState extends State<MapPicker> {
   Timer? timer;
 
   void _onToggleMapTypePressed() {
-    final MapType nextType =
-        MapType.values[(_currentMapType.index + 1) % MapType.values.length];
+    final MapType nextType = MapType.values[(_currentMapType.index + 1) % MapType.values.length];
 
     setState(() => _currentMapType = nextType);
   }
@@ -97,8 +96,7 @@ class MapPickerState extends State<MapPicker> {
   Future<void> _initCurrentLocation() async {
     Position? currentPosition;
     try {
-      currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: widget.desiredAccuracy!);
+      currentPosition = await Geolocator.getCurrentPosition(desiredAccuracy: widget.desiredAccuracy!);
       d("position = $currentPosition");
 
       setState(() => _currentPosition = currentPosition);
@@ -111,9 +109,7 @@ class MapPickerState extends State<MapPicker> {
 
     setState(() => _currentPosition = currentPosition);
 
-    if (currentPosition != null)
-      moveToCurrentLocation(
-          LatLng(currentPosition.latitude, currentPosition.longitude));
+    if (currentPosition != null) moveToCurrentLocation(LatLng(currentPosition.latitude, currentPosition.longitude));
   }
 
   Future moveToCurrentLocation(LatLng currentLocation) async {
@@ -127,8 +123,7 @@ class MapPickerState extends State<MapPicker> {
   @override
   void initState() {
     super.initState();
-    if (widget.automaticallyAnimateToCurrentLocation! && !widget.requiredGPS!)
-      _initCurrentLocation();
+    if (widget.automaticallyAnimateToCurrentLocation! && !widget.requiredGPS!) _initCurrentLocation();
 
     if (widget.mapStylePath != null) {
       rootBundle.loadString(widget.mapStylePath!).then((string) {
@@ -144,15 +139,12 @@ class MapPickerState extends State<MapPicker> {
       if (_currentPosition == null) _initCurrentLocation();
     }
 
-    if (_currentPosition != null && dialogOpen != null)
-      Navigator.of(context, rootNavigator: true).pop();
+    if (_currentPosition != null && dialogOpen != null) Navigator.of(context, rootNavigator: true).pop();
 
     return Scaffold(
       body: Builder(
         builder: (context) {
-          if (_currentPosition == null &&
-              widget.automaticallyAnimateToCurrentLocation! &&
-              widget.requiredGPS!) {
+          if (_currentPosition == null && widget.automaticallyAnimateToCurrentLocation! && widget.requiredGPS!) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -180,8 +172,7 @@ class MapPickerState extends State<MapPicker> {
               }
 
               _lastMapPosition = widget.initialCenter;
-              LocationProvider.of(context, listen: false)
-                  .setLastIdleLocation(_lastMapPosition);
+              LocationProvider.of(context, listen: false).setLastIdleLocation(_lastMapPosition);
             },
             onCameraMove: (CameraPosition position) {
               _lastMapPosition = position.target;
@@ -190,8 +181,7 @@ class MapPickerState extends State<MapPicker> {
               print("onCameraIdle#_lastMapPosition = $_lastMapPosition");
               timer = Timer(Duration(milliseconds: 500), () {
                 //condition check to avoid calling server too often
-                LocationProvider.of(context, listen: false)
-                    .setLastIdleLocation(_lastMapPosition);
+                LocationProvider.of(context, listen: false).setLastIdleLocation(_lastMapPosition);
                 setState(() {});
               });
             },
@@ -224,8 +214,7 @@ class MapPickerState extends State<MapPicker> {
         padding: widget.resultCardPadding ?? EdgeInsets.all(16.0),
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          child: Consumer<LocationProvider>(
-              builder: (context, locationProvider, _) {
+          child: Consumer<LocationProvider>(builder: (context, locationProvider, _) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -251,15 +240,12 @@ class MapPickerState extends State<MapPicker> {
                         _streetNumber = data["streetNumber"];
                         _route = data["route"];
                         _locality = data["locality"];
-                        _administrativeAreaLevel2 =
-                            data["administrativeAreaLevel2"];
-                        _administrativeAreaLevel1 =
-                            data["administrativeAreaLevel1"];
+                        _administrativeAreaLevel2 = data["administrativeAreaLevel2"];
+                        _administrativeAreaLevel1 = data["administrativeAreaLevel1"];
                         _country = data["country"];
                         _postalCode = data["postalCode"];
                         return Text(
-                          _address ??
-                              AppLocalizations.of(context)!.unnamedPlace,
+                          _address ?? AppLocalizations.of(context)!.unnamedPlace,
                           style: TextStyle(fontSize: 18),
                         );
                       },
@@ -284,7 +270,10 @@ class MapPickerState extends State<MapPicker> {
                       });
                     },
                     child: widget.resultCardConfirmIcon ??
-                        Icon(Icons.arrow_forward),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        ),
                   ),
                 ],
               ),
@@ -297,16 +286,12 @@ class MapPickerState extends State<MapPicker> {
 
   Future<Map<String, String?>> getAddress(LatLng? location) async {
     try {
-      final endpoint =
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
+      final endpoint = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
           '&key=${widget.apiKey}&language=${widget.language}';
 
-      final response = jsonDecode((await http.get(Uri.parse(endpoint),
-              headers: await LocationUtils.getAppHeaders()))
-          .body);
+      final response = jsonDecode((await http.get(Uri.parse(endpoint), headers: await LocationUtils.getAppHeaders())).body);
 
-      List<dynamic> addressComponents =
-          response['results'][0]['address_components'];
+      List<dynamic> addressComponents = response['results'][0]['address_components'];
       String? streetNumber;
       String? route;
       String? locality;
@@ -315,22 +300,15 @@ class MapPickerState extends State<MapPicker> {
       String? country;
       String? postalCode;
       if (addressComponents != null) {
-        streetNumber = addressComponents.firstWhere(
-            (entry) => entry['types'].contains('street_number'))['long_name'];
-        route = addressComponents.firstWhere(
-            (entry) => entry['types'].contains('route'))['long_name'];
-        locality = addressComponents.firstWhere(
-            (entry) => entry['types'].contains('locality'))['long_name'];
-        administrativeAreaLevel2 = addressComponents.firstWhere((entry) =>
-            entry['types']
-                .contains('administrative_area_level_2'))['long_name'];
-        administrativeAreaLevel1 = addressComponents.firstWhere((entry) =>
-            entry['types']
-                .contains('administrative_area_level_1'))['long_name'];
-        country = addressComponents.firstWhere(
-            (entry) => entry['types'].contains('country'))['long_name'];
-        postalCode = addressComponents.firstWhere(
-            (entry) => entry['types'].contains('postal_code'))['long_name'];
+        streetNumber = addressComponents.firstWhere((entry) => entry['types'].contains('street_number'))['long_name'];
+        route = addressComponents.firstWhere((entry) => entry['types'].contains('route'))['long_name'];
+        locality = addressComponents.firstWhere((entry) => entry['types'].contains('locality'))['long_name'];
+        administrativeAreaLevel2 =
+            addressComponents.firstWhere((entry) => entry['types'].contains('administrative_area_level_2'))['long_name'];
+        administrativeAreaLevel1 =
+            addressComponents.firstWhere((entry) => entry['types'].contains('administrative_area_level_1'))['long_name'];
+        country = addressComponents.firstWhere((entry) => entry['types'].contains('country'))['long_name'];
+        postalCode = addressComponents.firstWhere((entry) => entry['types'].contains('postal_code'))['long_name'];
       }
       return {
         "placeId": response['results'][0]['place_id'],
@@ -356,7 +334,10 @@ class MapPickerState extends State<MapPicker> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.place, size: 56),
+            Icon(
+              Icons.place,
+              size: 56,
+            ),
             Container(
               decoration: ShapeDecoration(
                 shadows: [
@@ -388,11 +369,9 @@ class MapPickerState extends State<MapPicker> {
 
     if (geolocationStatus == LocationPermission.denied && dialogOpen == null) {
       dialogOpen = _showDeniedDialog();
-    } else if (geolocationStatus == LocationPermission.deniedForever &&
-        dialogOpen == null) {
+    } else if (geolocationStatus == LocationPermission.deniedForever && dialogOpen == null) {
       dialogOpen = _showDeniedForeverDialog();
-    } else if (geolocationStatus == LocationPermission.whileInUse ||
-        geolocationStatus == LocationPermission.always) {
+    } else if (geolocationStatus == LocationPermission.whileInUse || geolocationStatus == LocationPermission.always) {
       d('GeolocationStatus.granted');
 
       if (dialogOpen != null) {
@@ -414,10 +393,8 @@ class MapPickerState extends State<MapPicker> {
             return true;
           },
           child: AlertDialog(
-            title:
-                Text(AppLocalizations.of(context)!.access_to_location_denied),
-            content: Text(AppLocalizations.of(context)!
-                .allow_access_to_the_location_services),
+            title: Text(AppLocalizations.of(context)!.access_to_location_denied),
+            content: Text(AppLocalizations.of(context)!.allow_access_to_the_location_services),
             actions: <Widget>[
               TextButton(
                 child: Text(AppLocalizations.of(context)!.ok),
@@ -446,10 +423,8 @@ class MapPickerState extends State<MapPicker> {
             return true;
           },
           child: AlertDialog(
-            title: Text(AppLocalizations.of(context)!
-                .access_to_location_permanently_denied),
-            content: Text(AppLocalizations.of(context)!
-                .allow_access_to_the_location_services_from_settings),
+            title: Text(AppLocalizations.of(context)!.access_to_location_permanently_denied),
+            content: Text(AppLocalizations.of(context)!.allow_access_to_the_location_services_from_settings),
             actions: <Widget>[
               TextButton(
                 child: Text(AppLocalizations.of(context)!.ok),
@@ -494,7 +469,10 @@ class _MapFabs extends StatelessWidget {
               onPressed: onToggleMapTypePressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
               mini: true,
-              child: const Icon(Icons.layers),
+              child: const Icon(
+                Icons.layers,
+                color: Colors.white,
+              ),
               heroTag: "layers",
             ),
           if (myLocationButtonEnabled!)
@@ -502,7 +480,10 @@ class _MapFabs extends StatelessWidget {
               onPressed: onMyLocationPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
               mini: true,
-              child: const Icon(Icons.my_location),
+              child: const Icon(
+                Icons.my_location,
+                color: Colors.white,
+              ),
               heroTag: "myLocation",
             ),
         ],
