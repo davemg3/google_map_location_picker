@@ -246,7 +246,7 @@ class MapPickerState extends State<MapPicker> {
                         _country = data["country"];
                         _postalCode = data["postalCode"];
                         return Text(
-                          _address ?? AppLocalizations.of(context)?.unnamedPlace,
+                          _address ?? AppLocalizations.of(context)?.unnamedPlace ?? '',
                           style: TextStyle(fontSize: 18),
                         );
                       },
