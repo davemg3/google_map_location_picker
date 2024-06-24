@@ -133,12 +133,23 @@ class MapPickerState extends State<MapPicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    d("map build");
+  void didChangeDependencies() {
     if (widget.requiredGPS!) {
       _checkGeolocationPermission();
       if (_currentPosition == null) _initCurrentLocation();
     }
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    d("map build");
+/*
+    if (widget.requiredGPS!) {
+      _checkGeolocationPermission();
+      if (_currentPosition == null) _initCurrentLocation(); //db : warning when null this creates un infinite loop
+    }
+*/
 
     if (_currentPosition != null && dialogOpen != null) Navigator.of(context, rootNavigator: true).pop();
 
