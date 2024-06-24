@@ -104,7 +104,7 @@ class MapPickerState extends State<MapPicker> {
       currentPosition = null;
       d("_initCurrentLocation#e = $e");
     }
-
+    d("mounted# = $mounted");
     if (!mounted) return;
 
     setState(() => _currentPosition = currentPosition);
@@ -143,7 +143,7 @@ class MapPickerState extends State<MapPicker> {
 
   @override
   Widget build(BuildContext context) {
-    d("map build");
+    d("map build $_currentPosition");
 /*
     if (widget.requiredGPS!) {
       _checkGeolocationPermission();
@@ -394,6 +394,7 @@ class MapPickerState extends State<MapPicker> {
   }
 
   Future _showDeniedDialog() {
+    d("_showDeniedDialog context $context");
     return showDialog(
       context: context,
       barrierDismissible: false,
