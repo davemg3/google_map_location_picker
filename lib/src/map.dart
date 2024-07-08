@@ -34,6 +34,7 @@ class MapPicker extends StatefulWidget {
     this.resultCardPadding,
     this.language,
     this.desiredAccuracy,
+    this.circles,
   }) : super(key: key);
 
   final String apiKey;
@@ -59,6 +60,7 @@ class MapPicker extends StatefulWidget {
   final String? language;
 
   final LocationAccuracy? desiredAccuracy;
+  final Set<Circle>? circles;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -205,6 +207,7 @@ class MapPickerState extends State<MapPicker> {
 //            },
             mapType: _currentMapType,
             myLocationEnabled: true,
+            circles: widget.circles ?? const <Circle>{},
           ),
           _MapFabs(
             myLocationButtonEnabled: widget.myLocationButtonEnabled,
@@ -394,7 +397,7 @@ class MapPickerState extends State<MapPicker> {
   }
 
   Future _showDeniedDialog() {
-    d("_showDeniedDialog context $context");
+    d("_showDeniedDialog context ");
     return showDialog(
       context: context,
       barrierDismissible: false,
