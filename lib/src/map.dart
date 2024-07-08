@@ -145,7 +145,7 @@ class MapPickerState extends State<MapPicker> {
 
   @override
   Widget build(BuildContext context) {
-    d("map build $_currentPosition");
+    d("map build $_currentPosition initialZoom ${widget.initialZoom}");
 /*
     if (widget.requiredGPS!) {
       _checkGeolocationPermission();
