@@ -129,7 +129,7 @@ class MapPickerState extends State<MapPicker> {
           circleId: CircleId(UniqueKey().toString()),
           center: currentLocation,
           radius: widget.circleRadius,
-          fillColor: Colors.yellow.withOpacity(0.2),
+          fillColor: widget.circleColor.withOpacity(0.2),
           strokeWidth: 2,
           strokeColor: widget.circleColor));
     }
