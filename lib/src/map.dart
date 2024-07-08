@@ -174,10 +174,8 @@ class MapPickerState extends State<MapPicker> {
         children: <Widget>[
           GoogleMap(
             myLocationButtonEnabled: false,
-            initialCameraPosition: CameraPosition(
-              target: widget.initialCenter!,
-              zoom: widget.initialZoom!,
-            ),
+            initialCameraPosition: CameraPosition(target: widget.initialCenter!, zoom: 2 //widget.initialZoom!,
+                ),
             onMapCreated: (GoogleMapController controller) {
               mapController.complete(controller);
               //Implementation of mapStyle
@@ -207,7 +205,7 @@ class MapPickerState extends State<MapPicker> {
 //            },
             mapType: _currentMapType,
             myLocationEnabled: true,
-            circles: widget.circles ?? const <Circle>{},
+            //circles: widget.circles ?? const <Circle>{},
           ),
           _MapFabs(
             myLocationButtonEnabled: widget.myLocationButtonEnabled,
