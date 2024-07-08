@@ -41,7 +41,9 @@ class LocationPicker extends StatefulWidget {
     this.countries,
     this.language,
     this.desiredAccuracy,
-    this.circles,
+    this.isCirle = false,
+    this.circleRadius = 500,
+    this.circleColor = Colors.yellow,
   });
 
   final String apiKey;
@@ -70,7 +72,10 @@ class LocationPicker extends StatefulWidget {
   final String? language;
 
   final LocationAccuracy? desiredAccuracy;
-  final Set<Circle>? circles;
+  final bool isCirle;
+  final double circleRadius;
+  final Color circleColor;
+
   @override
   LocationPickerState createState() => LocationPickerState();
 }
@@ -417,7 +422,9 @@ class LocationPickerState extends State<LocationPicker> {
             key: mapKey,
             language: widget.language,
             desiredAccuracy: widget.desiredAccuracy,
-            circles: widget.circles,
+            isCirle: widget.isCirle,
+            circleRadius: widget.circleRadius,
+            circleColor: widget.circleColor,
           ),
         );
       }),

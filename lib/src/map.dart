@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class MapPicker extends StatefulWidget {
     this.resultCardPadding,
     this.language,
     this.desiredAccuracy,
-    this.circles,
+    this.isCirle = false,
+    this.circleRadius = 500,
+    this.circleColor = Colors.yellow,
   }) : super(key: key);
 
   final String apiKey;
@@ -60,7 +63,9 @@ class MapPicker extends StatefulWidget {
   final String? language;
 
   final LocationAccuracy? desiredAccuracy;
-  final Set<Circle>? circles;
+  final bool isCirle;
+  final double circleRadius;
+  final Color circleColor;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -87,6 +92,7 @@ class MapPickerState extends State<MapPicker> {
   String? _country;
   String? _postalCode;
   Timer? timer;
+  Set<Circle> _circles = HashSet<Circle>();
 
   void _onToggleMapTypePressed() {
     final MapType nextType = MapType.values[(_currentMapType.index + 1) % MapType.values.length];
@@ -116,9 +122,22 @@ class MapPickerState extends State<MapPicker> {
 
   Future moveToCurrentLocation(LatLng currentLocation) async {
     d('MapPickerState.moveToCurrentLocation "currentLocation = [$currentLocation]"');
+    //db08/07/2024
+    if (widget.isCirle) {
+      _circles.clear();
+      _circles.add(Circle(
+          circleId: CircleId(UniqueKey().toString()),
+          center: currentLocation,
+          radius: widget.circleRadius,
+          fillColor: Colors.yellow.withOpacity(0.2),
+          strokeWidth: 2,
+          strokeColor: widget.circleColor));
+    }
+    //
     final controller = await mapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: currentLocation, zoom: 16),
+      //CameraPosition(target: currentLocation, zoom: 16),
+      CameraPosition(target: currentLocation, zoom: widget.initialZoom!),
     ));
   }
 
@@ -207,7 +226,7 @@ class MapPickerState extends State<MapPicker> {
 //            },
             mapType: _currentMapType,
             myLocationEnabled: true,
-            circles: widget.circles ?? const <Circle>{},
+            circles: _circles,
           ),
           _MapFabs(
             myLocationButtonEnabled: widget.myLocationButtonEnabled,
