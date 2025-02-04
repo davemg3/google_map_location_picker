@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
+import 'app_localizations_cs.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
@@ -13,8 +14,12 @@ import 'app_localizations_fr.dart';
 import 'app_localizations_it.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sk.dart';
 import 'app_localizations_sr.dart';
 import 'app_localizations_tr.dart';
+import 'app_localizations_zh.dart';
+
+// ignore_for_file: type=lint
 
 /// Callers can lookup localized strings with an instance of AppLocalizations
 /// returned by `AppLocalizations.of(context)`.
@@ -98,6 +103,7 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
+    Locale('cs'),
     Locale('de'),
     Locale('en'),
     Locale('es'),
@@ -105,8 +111,11 @@ abstract class AppLocalizations {
     Locale('it'),
     Locale('pt'),
     Locale('ru'),
+    Locale('sk'),
     Locale('sr'),
-    Locale('tr')
+    Locale('tr'),
+    Locale('zh'),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans')
   ];
 
   /// No description provided for @please_check_your_connection.
@@ -197,7 +206,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'de', 'en', 'es', 'fr', 'it', 'pt', 'ru', 'sr', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'cs', 'de', 'en', 'es', 'fr', 'it', 'pt', 'ru', 'sk', 'sr', 'tr', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -205,10 +214,20 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
 
+  // Lookup logic when language+script codes are specified.
+  switch (locale.languageCode) {
+    case 'zh': {
+  switch (locale.scriptCode) {
+    case 'Hans': return AppLocalizationsZhHans();
+   }
+  break;
+   }
+  }
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'ar': return AppLocalizationsAr();
+    case 'cs': return AppLocalizationsCs();
     case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
     case 'es': return AppLocalizationsEs();
@@ -216,8 +235,10 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
     case 'it': return AppLocalizationsIt();
     case 'pt': return AppLocalizationsPt();
     case 'ru': return AppLocalizationsRu();
+    case 'sk': return AppLocalizationsSk();
     case 'sr': return AppLocalizationsSr();
     case 'tr': return AppLocalizationsTr();
+    case 'zh': return AppLocalizationsZh();
   }
 
   throw FlutterError(
