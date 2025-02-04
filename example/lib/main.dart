@@ -4,6 +4,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:google_map_location_picker/generated/app_localizations.dart' as package; // localization of your package.
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -12,14 +13,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-   LocationResult? _pickedLocation;
+  LocationResult? _pickedLocation;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
 //      theme: ThemeData.dark(),
       title: 'location picker',
-      localizationsDelegates:  [
+      localizationsDelegates: [
         //location_picker.S.delegate,
         //S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
         ...package.AppLocalizations.localizationsDelegates
       ],
       supportedLocales: const <Locale>[
+        Locale('cs'),
         Locale('en', ''),
         Locale('ar', ''),
         Locale('pt', ''),
@@ -35,7 +37,9 @@ class _MyAppState extends State<MyApp> {
         Locale('es', ''),
         Locale('it', ''),
         Locale('ru', ''),
-
+        Locale('sk'),
+        Locale('zh'),
+        Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans')
       ],
       //localizationsDelegates: AppLocalizations.localizationsDelegates,
       //supportedLocales: AppLocalizations.supportedLocales,
